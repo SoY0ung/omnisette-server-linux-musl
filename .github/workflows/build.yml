@@ -27,15 +27,16 @@ jobs:
       - name: Install cross
         run: cargo install cross
 
-#      - name: Build for x86_64
-#        run: cross build --release --target x86_64-unknown-linux-musl
+      - name: Build for x86_64
+        run: cross build --release --target x86_64-unknown-linux-musl
 
       - name: Build for i686
         run: cross build --release --target i686-unknown-linux-musl
 
       - name: Move and rename binaries
-        run: cp target/i686-unknown-linux-musl/release/omnisette-server target/omnisette-server-linux-i686-musl
-#          cp target/x86_64-unknown-linux-musl/release/omnisette-server target/omnisette-server-linux-x86_64-musl
+        run: |
+          cp target/i686-unknown-linux-musl/release/omnisette-server target/omnisette-server-linux-i686-musl 
+          cp target/x86_64-unknown-linux-musl/release/omnisette-server target/omnisette-server-linux-x86_64-musl
 
       - name: Upload to nightly release
         uses: IsaacShelton/update-existing-release@v1.3.1
@@ -43,4 +44,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           release: "Build"
           tag: "build"
-          files: target/omnisette-server-linux-i686-musl
+          files: |
+            target/omnisette-server-linux-i686-musl
+            target/omnisette-server-linux-x86_64-musl
